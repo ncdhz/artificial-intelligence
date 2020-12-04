@@ -19,5 +19,5 @@
     对于约束满足问题的认识，用回溯和约束传播算法求解
     
 ### 强化学习
-    
-    command_line 使用强化学习 Q-Learning 算法
+    + command_line 使用强化学习 Q-Learning 算法
+    + Q_Learning 走迷宫
