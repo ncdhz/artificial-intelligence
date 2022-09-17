@@ -1,6 +1,10 @@
 import numpy as np
 import time
-import tkinter as tk
+import sys
+if sys.version_info.major == 2:
+    import Tkinter as tk
+else:
+    import tkinter as tk
 
 
 UNIT = 40   # pixels
@@ -14,7 +18,7 @@ class Maze(tk.Tk, object):
         self.action_space = ['u', 'd', 'l', 'r']
         self.n_actions = len(self.action_space)
         self.title('maze')
-        self.geometry('{0}x{1}'.format(MAZE_H * UNIT, MAZE_H * UNIT))
+        self.geometry('{0}x{1}'.format(MAZE_W * UNIT, MAZE_H * UNIT))
         self._build_maze()
 
     def _build_maze(self):
@@ -110,21 +114,5 @@ class Maze(tk.Tk, object):
         return s_, reward, done
 
     def render(self):
-        time.sleep(0.1)
+        time.sleep(0.001)
         self.update()
-
-
-def update():
-    for t in range(10):
-        s = env.reset()
-        while True:
-            env.render()
-            a = 1
-            s, r, done = env.step(a)
-            if done:
-                break
-
-if __name__ == '__main__':
-    env = Maze()
-    env.after(100, update)
-    env.mainloop()
