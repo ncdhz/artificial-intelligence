@@ -7,14 +7,18 @@ class Net(nn.Module):
     def __init__(self, n_feature, n_hidden, n_output):
         super().__init__()
         self.el = nn.Linear(n_feature, n_hidden)
-        self.q = nn.Linear(n_hidden, n_output)
+        self.values = nn.Linear(n_hidden, 1)
+        self.advantages = nn.Linear(n_hidden, n_output)
         self.relu = nn.ReLU()
 
     def forward(self, x):
-        return self.q(self.relu(self.el(x)))
+        el = self.relu(self.el(x))
+        value = self.values(el)
+        advantages = self.advantages(el)
+        return value + (advantages - advantages.mean(dim=1, keepdim=True))
 
 # Deep Q Network off-policy
-class DeepQNetwork:
+class DuelingDQN:
     def __init__(self, n_actions, n_features, n_hidden=20, learning_rate=0.01, reward_decay=0.9, e_greedy=0.9, replace_target_iter=300, memory_size=500, batch_size=32, e_greedy_increment=None):
         self.n_actions = n_actions
         self.n_features = n_features

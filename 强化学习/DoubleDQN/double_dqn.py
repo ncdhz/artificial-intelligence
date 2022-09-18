@@ -14,7 +14,7 @@ class Net(nn.Module):
         return self.q(self.relu(self.el(x)))
 
 # Deep Q Network off-policy
-class DeepQNetwork:
+class DoubleDQN:
     def __init__(self, n_actions, n_features, n_hidden=20, learning_rate=0.01, reward_decay=0.9, e_greedy=0.9, replace_target_iter=300, memory_size=500, batch_size=32, e_greedy_increment=None):
         self.n_actions = n_actions
         self.n_features = n_features
@@ -81,6 +81,10 @@ class DeepQNetwork:
 
         with torch.no_grad():
             q_next = self.q_target(batch_memory[:, -self.n_features:])
+            q_eval4next = self.q_eval(batch_memory[:, -self.n_features:])
+
+        
+
         q_eval = self.q_eval(batch_memory[:, :self.n_features])
 
         # change q_target w.r.t q_eval's action
@@ -90,7 +94,12 @@ class DeepQNetwork:
         eval_act_index = batch_memory[:, self.n_features].type(torch.long)
         reward = batch_memory[:, self.n_features + 1]
 
-        q_target[batch_index, eval_act_index] = reward + self.gamma * q_next.max(dim=1).values
+        # select max value use Q estimate
+        max_act4next = q_eval4next.max(dim=1).indices
+        selected_q_next = q_next[batch_index, max_act4next]
+
+
+        q_target[batch_index, eval_act_index] = reward + self.gamma * selected_q_next
 
         # train eval network
         loss = self.loss_func(q_eval, q_target)
