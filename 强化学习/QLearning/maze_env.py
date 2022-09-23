@@ -19,9 +19,9 @@ class Maze(tk.Tk, object):
         self.n_actions = len(self.action_space)
         self.title('maze')
         self.geometry('{0}x{1}'.format(MAZE_W * UNIT, MAZE_H * UNIT))
-        self._build_maze()
+        self.__build_maze()
 
-    def _build_maze(self):
+    def __build_maze(self):
         self.canvas = tk.Canvas(self, bg='white',
                            height=MAZE_H * UNIT,
                            width=MAZE_W * UNIT)

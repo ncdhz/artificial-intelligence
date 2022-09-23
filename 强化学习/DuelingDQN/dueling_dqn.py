@@ -40,11 +40,11 @@ class DuelingDQN:
         self.memory = np.zeros((self.memory_size, n_features * 2 + 2))
 
         # consist of [target_net, evaluate_net]
-        self._build_net()
+        self.__build_net()
 
         self.cost_his = []
 
-    def _build_net(self):
+    def __build_net(self):
         self.q_eval = Net(self.n_features, self.n_hidden, self.n_actions)
         self.q_eval.train()
         self.q_target = Net(self.n_features, self.n_hidden, self.n_actions)

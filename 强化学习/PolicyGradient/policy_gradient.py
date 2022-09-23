@@ -24,9 +24,9 @@ class PolicyGradient:
 
         self.ep_obs, self.ep_as, self.ep_rs = [], [], []
 
-        self._build_net()
+        self.__build_net()
     
-    def _build_net(self):
+    def __build_net(self):
         self.net = Net(self.n_features, self.n_hidden, self.n_actions)
         self.optimizer = Adam(self.net.parameters(), lr=self.lr)
     
